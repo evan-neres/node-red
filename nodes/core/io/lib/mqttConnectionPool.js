@@ -34,12 +34,12 @@ module.exports = {
         var id = "["+(username||"")+":"+(password||"")+"]["+(clientid||"")+"]@"+broker+":"+port;
         if (!connections[id]) {
             connections[id] = function() {
-                var uid = (1+Math.random()*4294967295).toString(16);
+                var uid = (1+Math.random()*4294967295).toString(16).replace('.', '');
                 var client = mqtt.createClient(port,broker);
                 client.uid = uid;
                 client.setMaxListeners(0);
                 var options = {keepalive:15};
-                options.clientId = clientid || 'mqtt_' + (1+Math.random()*4294967295).toString(16);
+                options.clientId = clientid || 'mqtt_' + (1+Math.random()*4294967295).toString(16).replace('.', '');
                 options.username = username;
                 options.password = password;
                 options.will = will;
