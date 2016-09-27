@@ -19,6 +19,7 @@ RED.text.bidi = (function() {
     var LRE = "\u202A",
         RLE = "\u202B",
         PDF = "\u202C";
+    var calendarType = "gregorian";
 
     function isRTLValue(stringValue) {
         var length = stringValue.length;
@@ -121,10 +122,39 @@ RED.text.bidi = (function() {
         enforceTextDirectionOnPage();
     }
 
+    /**
+     * Sets the national calendar preference
+     * @param val - the calendar type hijri, hebrew or gregorian
+     */
+    function setCalendarType(val) {
+    	calendarType = val;
+    }
+
+    function getCalendarType() {
+    	return calendarType;
+    }
+    /**
+     * Formats the date according to the current selected calendar 
+     * @param date - the date object to be formatted
+     */
+    function getNationalDate(date){
+    	var options = {};
+        var lang = "en-US";
+        if (calendarType === "hijri") {
+        	options = lang + "-u-ca-islamic";
+        } else if (calendarType === "hebrew") {
+        	options = lang + "-u-ca-hebrew";
+        }
+        return date.toLocaleString(options);
+    }
+
     return {
         setTextDirection: setTextDirection,
         enforceTextDirectionWithUCC: enforceTextDirectionWithUCC,
         resolveBaseTextDir: resolveBaseTextDir,
-        prepareInput: prepareInput
+        prepareInput: prepareInput,
+        setCalendarType: setCalendarType,
+        getCalendarType: getCalendarType,
+        getNationalDate: getNationalDate
     }
 })();
